@@ -1,0 +1,17 @@
+
+class(CSCI081 HM-01 (Keller): MW 1:15 - 2:30 PM; HM Campus, Shanahan Center 2460)
+
+PHYS024 HM-07 (Donnelly, Lynn, Gerbode): MW 9:00 - 9:50 AM; HM Campus, Shanahan Center, B454, TR 8:10 - 9:25 AM; HM Campus, Shanahan Center, 1430 
+PHYS024 HM-06 (Lynn, Gerbode, Nichols): MW 8:00 - 8:50 AM; HM Campus, Shanahan Center, B470, TR 8:10 - 9:25 AM; HM Campus, Shanahan Center, 1430 
+PHYS024 HM-05 (Lynn, Gerbode): MW 8:00 - 8:50 AM; HM Campus, Shanahan Center, 2465, TR 8:10 - 9:25 AM; HM Campus, Shanahan Center, 1430 
+PHYS024 HM-08 (Lynn, Connolly, Gerbode): MW 9:00 - 9:50 AM; HM Campus, Shanahan Center, 3421, TR 8:10 - 9:25 AM; HM Campus, Shanahan Center, 1430 
+PHYS024 HM-09 (Lynn, Gerbode): MW 9:00 - 9:50 AM; HM Campus, Shanahan Center, 3465, TR 8:10 - 9:25 AM; HM Campus, Shanahan Center, 1430 
+PHYS024 HM-10 (Lynn, Gerbode, Gallicchio): MW 9:00 - 9:50 AM; HM Campus, Shanahan Center, 2425, TR 8:10 - 9:25 AM; HM Campus, Shanahan Center, 1430
+
+class([CourseCode, Section, [Professor1, Professsor2....], [[[Day1, Day2...], startTime, endTime, Campus, Building, Room], [[Day1, Day2...], startTime, endTime, Campus, Building, Room]] ]
+
+
+//fix capitalization or put in qyotes
+class([PHYS024, HM-07, [Donnelly, Lynn, Gerbode], [ [[M, W], 900, 950, HM, 'Shanahan Center', B454], [[T, R], 810, 925, HM, 'Shanahan Center', 1430]] ]
+
+class([phys024, hm-06, [lynn, gerbode, nichols], [ [[m, w], 800, 850, hm, 'shanahan center', b470], [[t, r], 810, 925, hm, 'shanahan center', 1430]] ]
