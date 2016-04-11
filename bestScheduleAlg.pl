@@ -29,9 +29,7 @@ noRepeatClasses(ClassList):-
 	classNameList(ClassList, NameList),
     setof(X, member(X, NameList), Set), 
     length(Set, Len), 
-    length(NameList, Len),
-    format('~n~n'),
-    write(NameList).
+    length(NameList, Len).
 
 % Get the title of every course in a schedule
 classNameList([], []).
