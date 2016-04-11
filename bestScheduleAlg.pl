@@ -1,16 +1,18 @@
 :- use_module(library(clpfd)).
 
 schedule :-
-	%retrieves list of all classes and values
+	%retrieves list of all possible courseSchedules and prints the in descending value order, will modify later to only print subset in nicer form.
 	findall([X, Va], class(X, Va), AllCourses),
-	findall(PossibleSchedules, legalSchedule(AllCourses, PossibleSchedules), Schedules).
+	findall((PossibleSchedules, Value), legalSchedule(AllCourses, PossibleSchedules, Value), Schedules),
+	sort(2, @>=, Schedules, Sorted),
+	write(Sorted).
 
 % can add test that schedule is in range of credits later, currently, no more than 6 classes allowed, limit placed in subseq.
-legalSchedule(AllCourses,MySchedule):-
+legalSchedule(AllCourses, MySchedule, Value):-
 	subseq(AllCourses,MySchedule, 0),
 	noRepeatClasses(MySchedule),
 	noTimeConflicts(MySchedule),
-	write(MySchedule).
+	scheduleVal(MySchedule, Value).
 
 %returns all possible combinations of between 1 and 6 courses, will be modified to have variable max classes or credit based max 
 subseq([],[], N):-
@@ -71,17 +73,23 @@ singleTimeConflict([D1, S1, E1 | _],[D2, S2, E2 | _]):-
 	D1 \= D2;
 	(S1 < S2, E1 < S2);
 	(S2< S1, E2 < S1).
+
+%Generates a singal schedules value
+scheduleVal([], 0).
+scheduleVal([ [_, CVal] | MySchedule], Value):-
+	Value #= CVal + ValRest,
+	scheduleVal(MySchedule, ValRest).
 	
 
 
 
 class(['CHEM023A','HM-01',3,'08/30/2016','12/16/2016',['Van Hecke','Johnson','Vosburg','Hawkins'],[[0,9,9.833333333333334,'HM Campus, Shanahan Center, 2460'],[2,9,9.833333333333334,'HM Campus, Shanahan Center, 2460'],[4,9,9.833333333333334,'HM Campus, Shanahan Center, 2460']]],12).
-class(['CHEM023A','HM-02',3,'08/30/2016','12/16/2016',['Van Hecke','Johnson','Vosburg','Hawkins'],[[0,10,10.833333333333334,'HM Campus, Shanahan Center, 2454'],[2,10,10.833333333333334,'HM Campus, Shanahan Center, 2454'],[4,10,10.833333333333334,'HM Campus, Shanahan Center, 2454']]],11).
-class(['CHEM023A','HM-03',3,'08/30/2016','12/16/2016',['Van Hecke','Johnson','Vosburg','Hawkins'],[[0,9,9.833333333333334,'HM Campus, Shanahan Center, 1480'],[2,9,9.833333333333334,'HM Campus, Shanahan Center, 1480'],[4,9,9.833333333333334,'HM Campus, Shanahan Center, 1480']]],10).
+%class(['CHEM023A','HM-02',3,'08/30/2016','12/16/2016',['Van Hecke','Johnson','Vosburg','Hawkins'],[[0,10,10.833333333333334,'HM Campus, Shanahan Center, 2454'],[2,10,10.833333333333334,'HM Campus, Shanahan Center, 2454'],[4,10,10.833333333333334,'HM Campus, Shanahan Center, 2454']]],11).
+%class(['CHEM023A','HM-03',3,'08/30/2016','12/16/2016',['Van Hecke','Johnson','Vosburg','Hawkins'],[[0,9,9.833333333333334,'HM Campus, Shanahan Center, 1480'],[2,9,9.833333333333334,'HM Campus, Shanahan Center, 1480'],[4,9,9.833333333333334,'HM Campus, Shanahan Center, 1480']]],10).
 %class(['CHEM023A','HM-04',3,'08/30/2016','12/16/2016',['Van Hecke','Johnson','Vosburg','Hawkins'],[[0,9,9.833333333333334,'HM Campus, Shanahan Center, B450'],[2,9,9.833333333333334,'HM Campus, Shanahan Center, B450'],[4,9,9.833333333333334,'HM Campus, Shanahan Center, B450']]],4).
 %class(['CL 057','HM-02',0,'01/17/2017','05/14/2017',['McFadden'],[[2,13.25,16.5,'HM Campus, Olin Science Center, B141']]],5).
-class(['CL 057','HM-07',0,'01/17/2017','05/14/2017',['Wang'],[[2,13.25,16.166666666666668,'HM Campus, Norman F. Sprague Center, LSC']]],9).
-class(['CL 057','HM-08',0,'01/17/2017','05/14/2017',['Hickerson'],[[0,13.25,16.166666666666668,'HM Campus, Parsons Engineering Bldg, B181']]],8).
+%class(['CL 057','HM-07',0,'01/17/2017','05/14/2017',['Wang'],[[2,13.25,16.166666666666668,'HM Campus, Norman F. Sprague Center, LSC']]],9).
+%class(['CL 057','HM-08',0,'01/17/2017','05/14/2017',['Hickerson'],[[0,13.25,16.166666666666668,'HM Campus, Parsons Engineering Bldg, B181']]],8).
 %class(['CL 057','HM-09',0,'01/17/2017','05/14/2017',['Van Heuvelen'],[]],8).
 %class(['ENGR079','HM-02',3,'08/30/2016','12/16/2016',['Staff'],[[0,10,10.833333333333334,'HM Campus, Shanahan Center, 2440'],[2,10,10.833333333333334,'HM Campus, Shanahan Center, 2440']]],9).
 %class(['ENGR079','HM-03',3,'08/30/2016','12/16/2016',['Staff'],[[0,10,10.833333333333334,'HM Campus, Shanahan Center, 3460'],[2,10,10.833333333333334,'HM Campus, Shanahan Center, 3460']]],10).
