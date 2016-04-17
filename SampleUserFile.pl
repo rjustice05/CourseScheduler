@@ -1,0 +1,4 @@
+:- consult(sourceCode).
+
+setPreferences:-
+	generateSchedule.
