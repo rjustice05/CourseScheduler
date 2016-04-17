@@ -1,3 +1,0 @@
-'I work hard'
-
-class([phys024, hm-06, [lynn, gerbode, nichols], [ [[m, w], 800, 850, hm, 'shanahan center', b470], [[t, r], 810, 925, hm, 'shanahan center', 1430]] ]

@@ -1,17 +1,17 @@
+Note: 
+This is the Most recent iteration of the syntax for putting in class information. It is somewhat complicated, but users can automatically generate a list of all their class information in this format, by going to the website: http://rjustice05.github.io/hmc-scheduler/# then following the directions in the top right hand side of the page to drag the bookmarklet to their bookmark bar, adding classes from portal and then clicking the "prologify button at the bottom of the class list on the scheduler app.
 
-class(CSCI081 HM-01 (Keller): MW 1:15 - 2:30 PM; HM Campus, Shanahan Center 2460)
-
-PHYS024 HM-07 (Donnelly, Lynn, Gerbode): MW 9:00 - 9:50 AM; HM Campus, Shanahan Center, B454, TR 8:10 - 9:25 AM; HM Campus, Shanahan Center, 1430 
-PHYS024 HM-06 (Lynn, Gerbode, Nichols): MW 8:00 - 8:50 AM; HM Campus, Shanahan Center, B470, TR 8:10 - 9:25 AM; HM Campus, Shanahan Center, 1430 
-PHYS024 HM-05 (Lynn, Gerbode): MW 8:00 - 8:50 AM; HM Campus, Shanahan Center, 2465, TR 8:10 - 9:25 AM; HM Campus, Shanahan Center, 1430 
-PHYS024 HM-08 (Lynn, Connolly, Gerbode): MW 9:00 - 9:50 AM; HM Campus, Shanahan Center, 3421, TR 8:10 - 9:25 AM; HM Campus, Shanahan Center, 1430 
-PHYS024 HM-09 (Lynn, Gerbode): MW 9:00 - 9:50 AM; HM Campus, Shanahan Center, 3465, TR 8:10 - 9:25 AM; HM Campus, Shanahan Center, 1430 
-PHYS024 HM-10 (Lynn, Gerbode, Gallicchio): MW 9:00 - 9:50 AM; HM Campus, Shanahan Center, 2425, TR 8:10 - 9:25 AM; HM Campus, Shanahan Center, 1430
-
-class([CourseCode, Section, [Professor1, Professsor2....], [[[Day1, Day2...], startTime, endTime, Campus, Building, Room], [[Day1, Day2...], startTime, endTime, Campus, Building, Room]] ]
-
-
-//fix capitalization or put in qyotes
-class([PHYS024, HM-07, [Donnelly, Lynn, Gerbode], [ [[M, W], 900, 950, HM, 'Shanahan Center', B454], [[T, R], 810, 925, HM, 'Shanahan Center', 1430]] ]
-
-class([phys024, hm-06, [lynn, gerbode, nichols], [ [[m, w], 800, 850, hm, 'shanahan center', b470], [[t, r], 810, 925, hm, 'shanahan center', 1430]] ]
+[['CHEM023A','HM-01',3,[8,30,2016],[12,16,2016],['Van Hecke','Johnson','Vosburg','Hawkins'],[[0,9,9.833333333333334,'HM Campus, Shanahan Center, 2460'],[2,9,9.833333333333334,'HM Campus, Shanahan Center, 2460'],[4,9,9.833333333333334,'HM Campus, Shanahan Center, 2460']]],
+['CHEM023A','HM-02',3,[8,30,2016],[12,16,2016],['Van Hecke','Johnson','Vosburg','Hawkins'],[[0,9,9.833333333333334,'HM Campus, Shanahan Center, 2454'],[2,9,9.833333333333334,'HM Campus, Shanahan Center, 2454'],[4,9,9.833333333333334,'HM Campus, Shanahan Center, 2454']]],
+['CHEM023A','HM-03',3,[8,30,2016],[12,16,2016],['Van Hecke','Johnson','Vosburg','Hawkins'],[[0,9,9.833333333333334,'HM Campus, Shanahan Center, 1480'],[2,9,9.833333333333334,'HM Campus, Shanahan Center, 1480'],[4,9,9.833333333333334,'HM Campus, Shanahan Center, 1480']]],
+['CHEM023A','HM-04',3,[8,30,2016],[12,16,2016],['Van Hecke','Johnson','Vosburg','Hawkins'],[[0,9,9.833333333333334,'HM Campus, Shanahan Center, B450'],[2,9,9.833333333333334,'HM Campus, Shanahan Center, B450'],[4,9,9.833333333333334,'HM Campus, Shanahan Center, B450']]],
+['CL 057','HM-02',0,[1,17,2017],[5,14,2017],['McFadden'],[[2,13.25,16.5,'HM Campus, Olin Science Center, B141']]],
+['CL 057','HM-07',0,[1,17,2017],[5,14,2017],['Wang'],[[2,13.25,16.166666666666668,'HM Campus, Norman F. Sprague Center, LSC']]],
+['CL 057','HM-08',0,[1,17,2017],[5,14,2017],['Hickerson'],[[0,13.25,16.166666666666668,'HM Campus, Parsons Engineering Bldg, B181']]],
+['CL 057','HM-09',0,[1,17,2017],[5,14,2017],['Van Heuvelen'],[]],
+['ENGR079','HM-02',3,[8,30,2016],[12,16,2016],['Staff'],[[0,10,10.833333333333334,'HM Campus, Shanahan Center, 2440'],[2,10,10.833333333333334,'HM Campus, Shanahan Center, 2440']]],
+['ENGR079','HM-03',3,[8,30,2016],[12,16,2016],['Staff'],[[0,10,10.833333333333334,'HM Campus, Shanahan Center, 3460'],[2,10,10.833333333333334,'HM Campus, Shanahan Center, 3460']]],
+['MATH030G','HM-02',1.5,[8,30,2016],[10,14,2016],['dePillis'],[[1,9.583333333333334,10.833333333333334,'HM Campus, Shanahan Center, 3460'],[3,9.583333333333334,10.833333333333334,'HM Campus, Shanahan Center, 3460']]],
+['MATH030G','HM-03',1.5,[8,30,2016],[10,14,2016],['Staff'],[[1,8.166666666666666,9.416666666666666,'HM Campus, Shanahan Center, B450'],[3,8.166666666666666,9.416666666666666,'HM Campus, Shanahan Center, B450']]],
+['MATH035','HM-03',1.5,[10,19,2016],[12,16,2016],['Williams'],[[1,8.166666666666666,9.416666666666666,'HM Campus, Shanahan Center, B450'],[3,8.166666666666666,9.416666666666666,'HM Campus, Shanahan Center, B450']]],
+['MATH035','HM-04',1.5,[10,19,2016],[12,16,2016],['Williams'],[[1,9.583333333333334,10.833333333333334,'HM Campus, Shanahan Center, B450'],[3,9.583333333333334,10.833333333333334,'HM Campus, Shanahan Center, B450']]]].
