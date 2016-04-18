@@ -1,6 +1,7 @@
 :- use_module(library(clpfd)).
 
 schedule :-
+	%print name, prof, day, 
 	%retrieves list of all possible courseSchedules and prints the in descending value order, will modify later to only print subset in nicer form.
 	findall([X, Va], class(X, Va), AllCourses),
 	findall((PossibleSchedules, Value), legalSchedule(AllCourses, PossibleSchedules, Value), Schedules),
@@ -86,9 +87,9 @@ class(['CHEM023A','HM-01',3,'08/30/2016','12/16/2016',['Van Hecke','Johnson','Vo
 %class(['CHEM023A','HM-03',3,'08/30/2016','12/16/2016',['Van Hecke','Johnson','Vosburg','Hawkins'],[[0,9,9.833333333333334,'HM Campus, Shanahan Center, 1480'],[2,9,9.833333333333334,'HM Campus, Shanahan Center, 1480'],[4,9,9.833333333333334,'HM Campus, Shanahan Center, 1480']]],10).
 %class(['CHEM023A','HM-04',3,'08/30/2016','12/16/2016',['Van Hecke','Johnson','Vosburg','Hawkins'],[[0,9,9.833333333333334,'HM Campus, Shanahan Center, B450'],[2,9,9.833333333333334,'HM Campus, Shanahan Center, B450'],[4,9,9.833333333333334,'HM Campus, Shanahan Center, B450']]],4).
 %class(['CL 057','HM-02',0,'01/17/2017','05/14/2017',['McFadden'],[[2,13.25,16.5,'HM Campus, Olin Science Center, B141']]],5).
-%class(['CL 057','HM-07',0,'01/17/2017','05/14/2017',['Wang'],[[2,13.25,16.166666666666668,'HM Campus, Norman F. Sprague Center, LSC']]],9).
-%class(['CL 057','HM-08',0,'01/17/2017','05/14/2017',['Hickerson'],[[0,13.25,16.166666666666668,'HM Campus, Parsons Engineering Bldg, B181']]],8).
-%class(['CL 057','HM-09',0,'01/17/2017','05/14/2017',['Van Heuvelen'],[]],8).
+class(['CL 057','HM-07',0,'01/17/2017','05/14/2017',['Wang'],[[2,13.25,16.166666666666668,'HM Campus, Norman F. Sprague Center, LSC']]],9).
+class(['CL 057','HM-08',0,'01/17/2017','05/14/2017',['Hickerson'],[[0,13.25,16.166666666666668,'HM Campus, Parsons Engineering Bldg, B181']]],8).
+class(['CL 057','HM-09',0,'01/17/2017','05/14/2017',['Van Heuvelen'],[]],8).
 %class(['ENGR079','HM-02',3,'08/30/2016','12/16/2016',['Staff'],[[0,10,10.833333333333334,'HM Campus, Shanahan Center, 2440'],[2,10,10.833333333333334,'HM Campus, Shanahan Center, 2440']]],9).
 %class(['ENGR079','HM-03',3,'08/30/2016','12/16/2016',['Staff'],[[0,10,10.833333333333334,'HM Campus, Shanahan Center, 3460'],[2,10,10.833333333333334,'HM Campus, Shanahan Center, 3460']]],10).
 %class(['MATH030G','HM-02',1.5,'08/30/2016','10/14/2016',['dePillis'],[[1,9.583333333333334,10.833333333333334,'HM Campus, Shanahan Center, 3460'],[3,9.583333333333334,10.833333333333334,'HM Campus, Shanahan Center, 3460']]],11).
