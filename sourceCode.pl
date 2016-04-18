@@ -114,7 +114,6 @@ writeSchedule([[[Title, Section | _], Value]| Rest]):-
 	write(Section),
 	write(" "),
 	write_ln(Value),
-	write(" "),
 	writeSchedule(Rest).
 
 % Testig functions
