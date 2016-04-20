@@ -85,11 +85,11 @@ sumProfValue([Prof1 | RestProfs], Value):-
 
 %###################################################################################################################
 /* This section of code, called by typing 'generateSchedule.' prints out the schedules generated for a user*/
-generateSchedule :-
+generateSchedule:-
 	findall([OriginalX, OriginalVa], class(OriginalX, OriginalVa), Classes),
 	classValues(Classes),
 	findall([X, Va], class(X, Va), AllCourses),
-	findall([MySchedule, Value], (subseq(AllCourses,MySchedule, 0), noRepeatClasses(MySchedule), noTimeConflicts(MySchedule),scheduleVal(MySchedule, Value)), Schedules),
+	findall([MySchedule, Value], (subseq(AllCourses,MySchedule, 0), noRepeatClasses(MySchedule), noTimeConflicts(MySchedule),scheduleVal(MySchedule, 0, Value)), Schedules),
 	sort(2, @>=, Schedules, Sorted),
 	write_ln("                   Done                                                "),
 	writeSchedules(Sorted, 1).
@@ -138,7 +138,8 @@ subseq([_ | RestCourses], MyClasses, N) :-
 	subseq(RestCourses, MyClasses, N).
 subseq([Class | RestCourses], [Class | RestMyClasses], N) :-
 	N < 6,
-	subseq(RestCourses, RestMyClasses, N+1).
+	M is N +1,
+	subseq(RestCourses, RestMyClasses, M).
 
 %Checks that no class has been added multiple times to a schedule.
 %Could use is_set(NameList) instead of last 3 lines of code?
@@ -184,15 +185,23 @@ singleTimeSlot(C1T1, [C2T1 | RestC2]):-
 
 
 % Checks if 2 class times overlap
-singleTimeConflict([D1, S1, E1 | _],[D2, S2, E2 | _]):-
-	D1 \= D2;
-	(S1 < S2, E1 < S2);
-	(S2< S1, E2 < S1).
+singleTimeConflict([D1 | _],[D2 | _]):-
+	D1 \= D2.
+% what about if they are at the same time, then conflict!
+singleTimeConflict([D1, S1, E1 | _],[D2, S2 | _]):-
+	D1 = D2,
+	S1 < S2, 
+	E1 < S2.
+
+singleTimeConflict([D1, S1 | _],[D2, S2, E2 | _]):-
+	D1 = D2,
+	S2< S1, 
+	E2 < S1.
 
 %Generates a singal schedules value
-scheduleVal([], 0).
-scheduleVal([ [_, CVal] | MySchedule], Value):-
-	Value #= CVal + ValRest,
-	scheduleVal(MySchedule, ValRest).
+scheduleVal([], CurVal, CurVal).
+scheduleVal([ [_, CVal] | MySchedule], CurVal, Value):-
+	NValue is CVal + CurVal,
+	scheduleVal(MySchedule, NValue, Value).
 
 
