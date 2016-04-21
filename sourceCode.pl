@@ -1,5 +1,3 @@
- %:-  module(ModuleName, 
-  %                     List_of_Predicates_to_be_Exported).
 :- use_module(library(clpfd)).
 :- dynamic prof/2, section/3, courseTitle/2.
 :- initialization(main).
@@ -145,9 +143,7 @@ subseq([Class | RestCourses], [Class | RestMyClasses], N) :-
 %Could use is_set(NameList) instead of last 3 lines of code?
 noRepeatClasses(ClassList):-
 	classNameList(ClassList, NameList),
-    setof(X, member(X, NameList), Set), 
-    length(Set, Len), 
-    length(NameList, Len).
+    is_set(NameList).
 
 % Get the title of every course in a schedule
 classNameList([], []).
@@ -203,5 +199,3 @@ scheduleVal([], CurVal, CurVal).
 scheduleVal([ [_, CVal] | MySchedule], CurVal, Value):-
 	NValue is CVal + CurVal,
 	scheduleVal(MySchedule, NValue, Value).
-
-
