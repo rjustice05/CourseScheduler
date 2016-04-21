@@ -150,30 +150,30 @@ classNameList([], []).
 classNameList([[[H|_]|_]|Rest], [H | RNames]):-
 	classNameList(Rest, RNames).
 
-
+%generates list of list of class times. and passes to classConflict
 noTimeConflicts(MySchedule):-
 	classStartAndEnd(MySchedule, [FirstClassTL | RestClassTL]),
 	classConflict(FirstClassTL, RestClassTL).
 
 %Currently considers all classes to be full semester long, will be fixed later to read start/end dates.
 classStartAndEnd([], []).
-classStartAndEnd([[[_, _, _, _, _, _, Times], _] | Rest ], [Times | RTimes]):-
+classStartAndEnd([[[_, _, _, SDate, EDate, _, Times], _] | Rest ], [[SDate, EDate, Times] | RTimes]):-
 	classStartAndEnd(Rest, RTimes).
 
-%Checks if any two classes in a list conflict.
+%gets every 2 classes' lists of times and passes them to singleClassConflict
 classConflict(_, []).
-classConflict(Class1, [Class2 | Rest]):-
+classConflict([S1, E1, Class1], [[ S2, E2, Class2]| Rest]):-
 	singleClassConflict(Class1, Class2),
-	classConflict(Class1, Rest),
-	classConflict(Class2, Rest).
+	classConflict([S1, E1, Class1] , Rest),
+	classConflict([S2, E2, Class2], Rest).
 
-%Check if two courses have overlapping class times.
+%passes each time block for class 1 and all of class 2's time blocks to singleTimeSlot
 singleClassConflict([], _).
 singleClassConflict([C1T1 | RestC1], C2):-
 	singleTimeSlot(C1T1, C2),
 	singleClassConflict(RestC1, C2).
 
-%Checks if one class time overlaps with any of another courses class times.
+%passes each time block for class 2 along with a specific time block of class 1 to singleTimeSlot
 singleTimeSlot(_, []).
 singleTimeSlot(C1T1, [C2T1 | RestC2]):-
 	singleTimeConflict(C1T1,C2T1),
