@@ -14,4 +14,4 @@ setPreferences :-
 	rateClass('CHEM024', 5),
 	setMaxCourseLoad(17),
 	setMinCourseLoad(14),
-	generateSchedule.
+	numSchedulesToGenerate(10).
