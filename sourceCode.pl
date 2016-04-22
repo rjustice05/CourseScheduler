@@ -98,11 +98,17 @@ generateSchedule:-
 	findall([OriginalX, OriginalVa], class(OriginalX, OriginalVa), Classes),
 	classValues(Classes),
 	findall([X, Va], class(X, Va), AllCourses),
-	findall([MySchedule, Value, Units], (subseq(AllCourses,MySchedule, 0, Units), noRepeatClasses(MySchedule), noTimeConflicts(MySchedule),scheduleVal(MySchedule, 0, Value)), Schedules),
+	findall([MySchedule, Value, Units], (validSchedule(AllCourses, MySchedule, Value, Units)), Schedules),
 	sort(2, @>=, Schedules, Sorted),
 	is_set(Sorted),
 	write_ln("                   Done                                                "),
 	writeSchedules(Sorted, 1).
+
+validSchedule(AllCourses, MySchedule, Value, Units):-
+	subseq(AllCourses,MySchedule, 0, Units),
+	noRepeatClasses(MySchedule),
+	noTimeConflicts(MySchedule),
+	scheduleVal(MySchedule, 0, Value).
 
 writeSchedules([], _).
 
@@ -137,13 +143,8 @@ write_Helper([[T, S | _]| Rest]):-
 
 
 %###################################################################################################################
-%print name, prof, day, 
-%retrieves list of all possible courseSchedules and prints the in descending value order, will modify later to only print subset in nicer form.
 
-
-% can add test that schedule is in range of credits later, currently, no more than 6 classes allowed, limit placed in subseq.
-
-%returns all possible combinations of between 1 and 6 courses, will be modified to have variable max classes or credit based max 
+%returns all possible combinations sets of courses between the min and max number of units.
 subseq([],[], N, N):-
 	minCourseLoad(X),
 	N >= X,
@@ -175,28 +176,27 @@ noTimeConflicts(MySchedule):-
 	classStartAndEnd(MySchedule, [FirstClassTL | RestClassTL]),
 	classConflict(FirstClassTL, RestClassTL).
 
-%Currently considers all classes to be full semester long, will be fixed later to read start/end dates.
+%returns a list of all class times in a given possible schedule which can then be checked for conflicts.
 classStartAndEnd([], []).
 classStartAndEnd([[[_, _, _, SDate, EDate, _, Times], _] | Rest ], [[SDate, EDate, Times] | RTimes]):-
 	classStartAndEnd(Rest, RTimes).
 
-%gets every 2 classes' lists of times and passes them to singleClassConflict
+%gets every 2 classes' lists of times and passes them to singleClassConflict or dateConflict to check if they conflict.
 classConflict(_, []).
 classConflict([S1, E1, Class1], [[ S2, E2, Class2]| Rest]):-
 	singleClassConflict(Class1, Class2),
 	classConflict([S1, E1, Class1] , Rest),
 	classConflict([S2, E2, Class2], Rest), !.
-
 classConflict([S1, E1, Class1], [[ S2, E2, Class2]| Rest]):-
 	dateConflict(S1, E2),
 	classConflict([S1, E1, Class1] , Rest),
 	classConflict([S2, E2, Class2], Rest), !.
-
 classConflict([S1, E1, Class1], [[ S2, E2, Class2]| Rest]):-
 	dateConflict(S2, E1),
 	classConflict([S1, E1, Class1] , Rest),
 	classConflict([S2, E2, Class2], Rest).
 
+%Checks if the end month of one class is the start month of another class. (They are opposite half semester classes.)
 dateConflict([M1 | _], [M2 | _]):-
 	M1 = M2.
 
@@ -216,12 +216,10 @@ singleTimeSlot(C1T1, [C2T1 | RestC2]):-
 % Checks if 2 class times overlap
 singleTimeConflict([D1 | _],[D2 | _]):-
 	D1 \= D2.
-% what about if they are at the same time, then conflict!
 singleTimeConflict([D1, S1, E1 | _],[D2, S2 | _]):-
 	D1 = D2,
 	S1 < S2, 
 	E1 < S2.
-
 singleTimeConflict([D1, S1 | _],[D2, S2, E2 | _]):-
 	D1 = D2,
 	S2< S1, 
