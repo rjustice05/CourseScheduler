@@ -1,5 +1,5 @@
 :- use_module(library(clpfd)).
-:- dynamic prof/2, section/3, courseTitle/2.
+:- dynamic prof/2, section/3, courseTitle/2, day/3.
 :- initialization(main).
 
 %###################################################################################################################
@@ -55,6 +55,10 @@ rateSection(Title, Section, Value):-
 	retract(section(Title, Name, _)),
 	assert(section(Title, Name, Value)).
 
+rateDay(Day, Val):-
+	retract(day(Day, N, _)),
+	assert(day(Day, N, Val)).
+
 setMaxCourseLoad(N):-
 	retract(maxCourseLoad(_)),
 	assert(maxCourseLoad(N)).
@@ -77,13 +81,20 @@ classValue([Title, Section, Units, StartDate, EndDate, Profs, Times], _):-
 	courseTitle(Title, A),
 	section(Title, Section, B),
 	sumProfValue(Profs, C),
-	Value is A + B + C,
+	sumTimeValue(Times, D),
+	Value is A + B + C + D,
 	assert(class([Title, Section, Units, StartDate, EndDate, Profs, Times], Value)).
 
 sumProfValue([], 0).
 sumProfValue([Prof1 | RestProfs], Value):- 
 	sumProfValue(RestProfs, VRest),
 	prof(Prof1, V1),
+	Value is V1 + VRest.
+
+sumTimeValue([], 0).
+sumTimeValue([[D1 | _] | RestT], Value):-
+	sumTimeValue(RestT, VRest),
+	day(_, D1, V1),
 	Value is V1 + VRest.
 
 %###################################################################################################################
@@ -218,3 +229,15 @@ scheduleVal([], CurVal, CurVal).
 scheduleVal([ [_, CVal] | MySchedule], CurVal, Value):-
 	NValue is CVal + CurVal,
 	scheduleVal(MySchedule, NValue, Value).
+
+%###################################################################################################################
+%Initial Assertions which may be modified by the user.
+
+day('Monday',0,0).
+day('Tuesday',1,0).
+day('Wednesday',2,0).
+day('Thursday',3,0).
+day('Friday',4,0).
+day('Saturday',5,0).
+day('Sunday',6,0).
+
