@@ -98,7 +98,7 @@ generateSchedule:-
 	findall([OriginalX, OriginalVa], class(OriginalX, OriginalVa), Classes),
 	classValues(Classes),
 	findall([X, Va], class(X, Va), AllCourses),
-	findall([MySchedule, Value], (subseq(AllCourses,MySchedule, 0), noRepeatClasses(MySchedule), noTimeConflicts(MySchedule),scheduleVal(MySchedule, 0, Value)), Schedules),
+	findall([MySchedule, Value, Units], (subseq(AllCourses,MySchedule, 0, Units), noRepeatClasses(MySchedule), noTimeConflicts(MySchedule),scheduleVal(MySchedule, 0, Value)), Schedules),
 	sort(2, @>=, Schedules, Sorted),
 	is_set(Sorted),
 	write_ln("                   Done                                                "),
@@ -106,10 +106,12 @@ generateSchedule:-
 
 writeSchedules([], _).
 
-writeSchedules([ [H, Va]| Rest], N):-
+writeSchedules([ [H, Va, Units]| Rest], N):-
 	write("Schedule Number: "),
 	write(N),
-	write(" has a preference value of "),
+	write(" has "),
+	write(Units),
+	write(" and a preference value of "),
 	write_ln(Va),
 	writeSchedule(H),
 	M is N +1,
@@ -142,18 +144,18 @@ write_Helper([[T, S | _]| Rest]):-
 % can add test that schedule is in range of credits later, currently, no more than 6 classes allowed, limit placed in subseq.
 
 %returns all possible combinations of between 1 and 6 courses, will be modified to have variable max classes or credit based max 
-subseq([],[], N):-
+subseq([],[], N, N):-
 	minCourseLoad(X),
 	N >= X,
 	maxCourseLoad(Y),
 	Y >= N.
-subseq([_ | RestCourses], MyClasses, N) :-
-	subseq(RestCourses, MyClasses, N).
-subseq([Class | RestCourses], [Class | RestMyClasses], N) :-
+subseq([_ | RestCourses], MyClasses, N, U) :-
+	subseq(RestCourses, MyClasses, N, U).
+subseq([Class | RestCourses], [Class | RestMyClasses], N, U) :-
 	maxCourseLoad(Y),
 	N < Y,
 	unitsSum(Class, N, M),
-	subseq(RestCourses, RestMyClasses, M).
+	subseq(RestCourses, RestMyClasses, M, U).
 
 unitsSum([[_,_,Units | _], _], N, M):-
 	M is Units + N.
