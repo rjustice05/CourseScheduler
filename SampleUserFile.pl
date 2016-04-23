@@ -13,8 +13,11 @@ setPreferences :-
 	rateClass('CHEM024', 5),
 	rateSection('WRIT001', 'HM-01', 12),
 	rateSection('ECON104', 'HM-01', 23),
+	rateTimeBlock(8,10, -5),
+
 	setMaxCourseLoad(17),
 	setMinCourseLoad(14),
 	rateDay('Monday', -10),
 	rateDay('Friday', -20),
+
 	numSchedulesToGenerate(10).

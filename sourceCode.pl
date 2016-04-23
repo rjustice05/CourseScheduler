@@ -1,5 +1,5 @@
 :- use_module(library(clpfd)).
-:- dynamic prof/2, section/3, courseTitle/2, day/3.
+:- dynamic prof/2, section/3, courseTitle/2, day/3, timeBlock/3.
 :- initialization(main).
 
 %###################################################################################################################
@@ -59,6 +59,9 @@ rateDay(Day, Val):-
 	retract(day(Day, N, _)),
 	assert(day(Day, N, Val)).
 
+rateTimeBlock(Start, End, Val):-
+	assert(timeBlock(Start, End, Val)).
+
 setMaxCourseLoad(N):-
 	retract(maxCourseLoad(_)),
 	assert(maxCourseLoad(N)).
@@ -81,8 +84,9 @@ classValue([Title, Section, Units, StartDate, EndDate, Profs, Times], _):-
 	courseTitle(Title, A),
 	section(Title, Section, B),
 	sumProfValue(Profs, C),
-	sumTimeValue(Times, D),
-	Value is A + B + C + D,
+	sumDayValue(Times, D),
+	sumTimeValue(Times, E),
+	Value is A + B + C + D + E,
 	assert(class([Title, Section, Units, StartDate, EndDate, Profs, Times], Value)).
 
 sumProfValue([], 0).
@@ -91,11 +95,24 @@ sumProfValue([Prof1 | RestProfs], Value):-
 	prof(Prof1, V1),
 	Value is V1 + VRest.
 
-sumTimeValue([], 0).
-sumTimeValue([[D1 | _] | RestT], Value):-
-	sumTimeValue(RestT, VRest),
+sumDayValue([], 0).
+sumDayValue([[D1 | _] | RestT], Value):-
+	sumDayValue(RestT, VRest),
 	day(_, D1, V1),
 	Value is V1 + VRest.
+
+%Computes values for any class ENTIRELY within a rated timeBlock
+sumTimeValue([], 0).
+sumTimeValue([[_, SClass, EClass | _] | RestT], Value):-
+	sumTimeValue(RestT, VRest),
+	timeBlock(Start, End, V1),
+	SClass >= Start,
+	End >= EClass,
+	Value is V1 + VRest, !.
+%For classes which are not entirely inside a rated timeBlock
+sumTimeValue([[_ | _] | RestT], Value):-
+	sumTimeValue(RestT, Value).
+
 
 %###################################################################################################################
 /* This section of code, called by typing 'generateSchedule.' prints out the schedules generated for a user*/
