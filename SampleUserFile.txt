@@ -8,8 +8,8 @@ rateProf('Vosburg', 10),
 rateProf('Adolph', 6),
 
 rateClass('WRIT001', 5), 
-rateClass('MATH030B', 5),
-rateClass('CHEM024', 5),
+rateClass('MATH030B', 7),
+rateClass('CHEM024', 11),
 
 rateSection('WRIT001', 'HM-01', 12),
 rateSection('ECON104', 'HM-01', 23),
@@ -22,6 +22,7 @@ rateTimeBlock(13, 14.5, -5),
 
 rateDay('Monday', -10),
 rateDay('Friday', -20),
+
 setMaxCourseLoad(17),
 setMinCourseLoad(14).
 
