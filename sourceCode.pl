@@ -1,3 +1,5 @@
+% Run in terminal with the command: /usr/local/bin/swipl -f sourceCode.pl
+
 :- use_module(library(clpfd)).
 :- dynamic prof/2, section/3, courseTitle/2, day/3, timeBlock/3.
 :- initialization(main).
@@ -9,13 +11,22 @@ main :-
 	read([First | Rest]),
 	addClasses([First | Rest]),
 	assert(maxCourseLoad(18)),
-	assert(minCourseLoad(12)).
+	assert(minCourseLoad(12)),
+	write_ln(''),
+	write_ln("Please input the name of the file in which your program is written inside quotation marks and followed by a period. "),
+	write_ln(''),
+	read(FileName),
+	write_ln("Please input the number of schedules you would like to generate followed by a period. "),
+	read(Num),
+	generateSchedules(FileName, Num).
 
+%Takes in input list of classes from scheduler app and passes each class to addClass.
 addClasses([]).
 addClasses([First | Rest]):-
 	addClass(First),
 	addClasses(Rest).
 
+%Builds the fact database by insuring that all class titles, sections, professors, and classes are added.
 addClass([Title, Section, Units, StartDate, EndDate, Profs, Times]):-
 	addCourseTitle(Title),
 	assert(section(Title, Section, 0)),
@@ -27,6 +38,7 @@ addProfs([]).
 addProfs([X | Rest]):-
 	prof(X, _),
 	addProfs(Rest).
+%Will only run if the professor is not already in the database.
 addProfs([X | Rest]):-
 	assert(prof(X, 0)),
 	addProfs(Rest).
@@ -39,37 +51,138 @@ addCourseTitle(Title):-
 
 
 %###################################################################################################################
-/*This section of code allows the user to specify their preferences for their schedule.*/
+/*This section of code allows the user to specify their preferences for their schedule.
+The default rating for everything is zero, so a negative rating indicates that adding a particular,
+class, professor, section, day, or time would actually decrease your enjoyment of a particular
+schedule and a positive rating indicates you would enjoy a schedule with that thing better than you
+would enjoy a schedule without it. There is no set ranking system so that users can make use of the scale
+that makes the most sense to them.*/
+
+%This change a professors rating from the default of 0. It will modify the value of any class sections the professor teaches.
 rateProf(Name, Value):- 
 	prof(Name, _),
 	retract(prof(Name, _)),
 	assert(prof(Name, Value)). 
+rateProf(Name, _):-
+	\+prof(Name, _),
+	write_ln(""),
+	write("ERROR: '"),
+	write(Name),
+	write("' is not a valid professors name, check your spelling, check your class input list, "),
+	write_ln("and make sure you put the professors last name in quotation marks. ").
 
+
+%This change a classes rating from the default of 0. It will modify the value of all sections of the class.
 rateClass(Title, Value):- 
 	courseTitle(Title, _),
 	retract(courseTitle(Title, _)),
 	assert(courseTitle(Title, Value)).
+rateClass(Title, _):-
+	\+courseTitle(Title, _),
+	write_ln(""),
+	write("ERROR: '"),
+	write(Title),
+	write("' is not a valid class title, check your spelling, check your class input list, "),
+	write_ln("and make sure you put the class title in quotation marks. ").
 
+%This change the rating of a specific section of a class from the default of 0. Only affects this section.
 rateSection(Title, Section, Value):- 
 	section(Title, Section, _),
 	retract(section(Title, Name, _)),
 	assert(section(Title, Name, Value)).
+rateSection(Title, Section, _):-
+	\+section(Title, Section, _),
+	write_ln(""),
+	write("ERROR: "),
+	write([Title, Section]),
+	write(" is not a valid class title and section combination, check your spelling, check your class input list, "),
+	write_ln("and make sure you put them both in quotation marks. ").
 
+
+%Modifies the value of any class sections that meet on this day.
 rateDay(Day, Val):-
+	day(Day, N, _),
 	retract(day(Day, N, _)),
 	assert(day(Day, N, Val)).
+rateDay(Day, _):-
+	\+day(Day, _, _),
+	write_ln(""),
+	write("ERROR: "),
+	write(Day),
+	write(" is not a valid day of the week, check your spelling, and make sure you use the full word "),
+	write_ln("(e.g. 'Wednesday') and place it in quotation marks. ").
 
+
+/*Allows the user to specify their preference (or more likely their dislike) of classes which occur within
+a certain time period. Such as 8 AM to 10 AM, Takes times in military time with minutes as decimals. 
+(EX, 13.75 = 1:45 PM */
 rateTimeBlock(Start, End, Val):-
+	Start >= 0,
+	24 >= End,
+	End >= Start,
 	assert(timeBlock(Start, End, Val)).
 
+rateTimeBlock(Start, End, _):-
+	Start < 0,
+	End >= Start,
+	write_ln(""),
+	write("ERROR: "),
+	write(Start),
+	write(" is not a valid start time for a block. Times should be military times between 0 and 24, "),
+	write_ln("with minutes represented as fractions of hours in decimal form. (e.g. 1:45 PM = 13.75").
+rateTimeBlock(Start, End, _):-
+	End > 24,
+	End >= Start,
+	write_ln(""),
+	write("ERROR: "),
+	write(End),
+	write(" is not a valid end time for a block. Times should be military times between 0 and 24, "),
+	write_ln("with minutes represented as fractions of hours in decimal form. (e.g. 1:45 PM = 13.75").
+rateTimeBlock(Start, End, _):-
+	End < Start,
+	write_ln(""),
+	write("ERROR: "),
+	write([Start, End]),
+	write(" Valid blocks have a start time smaller than their end time. Times should be military times between 0 and 24, "),
+	write_ln("with minutes represented as fractions of hours in decimal form. (e.g. 1:45 PM = 13.75").
+
+%Specify the range of course credits you want in any possible schedules that are generated.
+%Default min and max course load are the min and max courseloads to be a full time student (12-18)
 setMaxCourseLoad(N):-
+	N > 0,
 	retract(maxCourseLoad(_)),
-	assert(maxCourseLoad(N)).
+	assert(maxCourseLoad(N)),
+	N < 28.
+setMaxCourseLoad(N):-
+	0 >= N,
+	write_ln(""),
+	write("ERROR: "),
+	write_ln("You cannot generate schedules with a Maximum of less than 1 credit. "),
+	false.
+setMaxCourseLoad(N):-
+	N >= 28,
+	write_ln(""),
+	write("WARNING: Taking a course load with a maximum of "),
+	write(N),
+	write(" credits, could cause sleep deprivation, depression, and permanent damage to your mental, "),
+	write_ln("emotional, physical, and spiritual well being.").
 
 setMinCourseLoad(N):-
+	N >0,
 	retract(minCourseLoad(_)),
 	assert(minCourseLoad(N)).
-
+setMinCourseLoad(N):-
+	0 >= N,
+	write_ln(""),
+	write("ERROR: "),
+	write_ln("You cannot generate schedules with a Minimum of less than 1 credit. "),
+	false.
+setMinCourseLoad(N):-
+	write_ln(""),
+	write("WARNING: Taking a course load with a minimum of "),
+	write(N),
+	write(" credits, could cause sleep deprivation, depression, and permanent damage to your mental, "),
+	write_ln("emotional, physical, and spiritual well being.").
 
 
 %###################################################################################################################
@@ -116,14 +229,32 @@ sumTimeValue([[_ | _] | RestT], Value):-
 
 %###################################################################################################################
 /* This section of code, called by typing 'generateSchedule.' prints out the schedules generated for a user*/
-numSchedulesToGenerate(Num):-
+generateSchedules(FileName, Num):-
+	readInFile(FileName),
 	findall([OriginalX, OriginalVa], class(OriginalX, OriginalVa), Classes),
 	classValues(Classes),
 	findall([X, Va], class(X, Va), AllCourses),
 	findall([MySchedule, Value, Units], (validSchedule(AllCourses, MySchedule, Value, Units)), Schedules),
 	sort(2, @>=, Schedules, Sorted),
-	%Currently writing all generated, valid schedules. Will modify so you only write highest rated schedules.
+	write_ln(""),
 	writeSchedules(Sorted, 0, Num).
+	
+readInFile(FileName):-
+	open(FileName,read, FileDescriptor),
+	read(FileDescriptor, Term),
+	call(Term),
+	minCourseLoad(Min),
+	maxCourseLoad(Max),
+	verifyMinMax(Min, Max).
+
+verifyMinMax(Min, Max):-
+	Max >= Min.
+verifyMinMax(Min, Max):-
+	write_ln(""),
+	write("Error: Your minimum course load of "),
+	write(Min),
+	write(" must be less than or equal to your maximum course load of "),
+	write_ln(Max).
 
 validSchedule(AllCourses, MySchedule, Value, Units):-
 	subseq(AllCourses, MySchedule, 0, Units),
@@ -143,7 +274,7 @@ writeSchedules([ [H, Va, Units]| Rest], N, MaxPrintedSchedules):-
 	write(M),
 	write(" has "),
 	write(Units),
-	write(" and a preference value of "),
+	write(" units and a preference value of "),
 	write_ln(Va),
 	writeSchedule(H),
 	writeSchedules(Rest, M, MaxPrintedSchedules).

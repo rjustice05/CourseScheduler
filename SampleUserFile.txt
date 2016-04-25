@@ -1,0 +1,27 @@
+% A Possible User's Preferences
+
+rateProf('Levy', 5),
+rateProf('Lyzenga', 15),
+rateProf('Williams', 8),
+rateProf('Dodds', 100),
+rateProf('Vosburg', 10),
+rateProf('Adolph', 6),
+
+rateClass('WRIT001', 5), 
+rateClass('MATH030B', 5),
+rateClass('CHEM024', 5),
+
+rateSection('WRIT001', 'HM-01', 12),
+rateSection('ECON104', 'HM-01', 23),
+rateSection('MATH035','HM-03', 12),
+rateSection('PHYS023','HM-03', 23),
+
+rateTimeBlock(8, 10, -5),
+rateTimeBlock(13, 14.5, -5),
+
+
+rateDay('Monday', -10),
+rateDay('Friday', -20),
+setMaxCourseLoad(17),
+setMinCourseLoad(14).
+
