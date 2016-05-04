@@ -1,5 +1,7 @@
 % A Possible User's Preferences
 
+addProfs([a, b]),
+verifyMinMax(1, 3),
 rateProf('Levy', 5),
 rateProf('Lyzenga', 15),
 rateProf('Williams', 8),
