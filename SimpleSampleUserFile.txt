@@ -1,4 +1,4 @@
-/* This is a possible user's preferences for their schedule. There are very few stated preferences to insure easy of comparison with the output results, however, because their are so few preferences, the first 25 output schedule lists will all have the same preference ranking. */
+/* This is a user's possible preferences for their schedule. There are very few stated preferences to insure easy comparison with the output results. However, because there are so few preferences, the first 24 output schedule lists will all have the same preference ranking. */
 
 rateProf('Mayeri', 10),
 rateProf('Dodds', 20),
