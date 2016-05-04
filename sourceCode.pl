@@ -12,10 +12,11 @@ main :-
 	addClasses([First | Rest]),
 	write_ln(''),
 	write_ln("Please input the name of the file in which your program is written inside quotation marks and followed by a period. "),
-	write_ln(''),
 	read(FileName),
+	write_ln(''),
 	write_ln("Please input the number of schedules you would like to generate followed by a period. "),
 	read(Num),
+	write_ln(''),
 	generateSchedules(FileName, Num).
 
 %Takes in input list of classes from scheduler app and passes each class to addClass.
@@ -261,6 +262,10 @@ validSchedule(AllCourses, MySchedule, Value, Units):-
 	scheduleVal(MySchedule, 0, Value).
 
 writeSchedules(_, Num, Num).
+writeSchedules(_, _, NumToPrint):-
+	NumToPrint < 0,
+	write_ln("Please input a positive number of schedules to generate"),
+	write_ln("").
 writeSchedules([], N, _):-
 	write("There were only "),
 	write(N),
