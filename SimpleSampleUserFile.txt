@@ -1,0 +1,13 @@
+/* This is a possible user's preferences for their schedule. There are very few stated preferences to insure easy of comparison with the output results, however, because their are so few preferences, the first 25 output schedule lists will all have the same preference ranking. */
+
+rateProf('Mayeri', 10),
+rateProf('Dodds', 20),
+
+rateClass('CHEM024', 15),
+rateClass('MATH030B', 5),
+
+rateSection('MATH030B', 'HM-02', 3),
+rateSection('WRIT001', 'HM-02', 17),
+
+setMaxCourseLoad(15),
+setMinCourseLoad(9).
